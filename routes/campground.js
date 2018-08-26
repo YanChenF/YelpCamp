@@ -49,7 +49,7 @@ router.get("/:id", function(req, res) {//right now the associated comments only 
 });
 
 //edit route
-router.get("/:id/edit", function(req, res) {
+router.get("/:id/edit", checkCampOwnership, function(req, res) {
     Camp.findById(req.params.id, function(err, campFound) {
         if(err) {
             console.log(err);
@@ -60,7 +60,7 @@ router.get("/:id/edit", function(req, res) {
 });
 
 //update
-router.put("/:id", function(req, res) {
+router.put("/:id", checkCampOwnership, function(req, res) {
     Camp.findByIdAndUpdate(req.params.id, req.body.camp, function(err, campUpdated) {
        if(err) {
            console.log(err);
@@ -71,15 +71,36 @@ router.put("/:id", function(req, res) {
 });
 
 //delete
-router.delete("/:id", function(req, res) {
+router.delete("/:id", checkCampOwnership, function(req, res) {
     Camp.findByIdAndRemove(req.params.id, function(err) {
         if(err) {
             console.log(err);
         } else {
             res.redirect("/campgrounds");
         }
-    })
-})
+    });
+});
+
+function checkCampOwnership(req, res, next) {
+    //check if user has logged in 
+    //check if user id equals camp user id
+    if(req.isAuthenticated()) {
+        Camp.findById(req.params.id, function(err, campFound) {
+           if(err) {
+               console.log(err);
+               res.redirect("back");
+            } else {
+               if(campFound.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
 
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {

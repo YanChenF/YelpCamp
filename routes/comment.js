@@ -46,6 +46,58 @@ router.post("/", isLoggedIn, function(req, res) {
    
 });
 
+//comment edit route
+router.get("/:commentId/edit", checkCommentOwnership, function(req, res) {
+    Comment.findById(req.params.commentId, function(err, commentFound) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("./comment/edit", {campground_id: req.params.id, comment: commentFound});
+        }
+    });
+});
+
+//comment update route
+router.put("/:commentId", checkCommentOwnership, function(req, res) {
+    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, commentUpdated) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
+//comment destroy
+router.delete("/:commentId", checkCommentOwnership, function(req, res) {
+    Comment.findByIdAndRemove(req.params.commentId, function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect("/campground/" + req.params.id);
+        }
+    });
+});
+
+function checkCommentOwnership(req, res, next) {
+    if(req.isAuthenticated) {
+        Comment.findById(req.params.commentId, function(err, commentFound) {
+            if(err) {
+                console.log(err);
+                res.redirect("back");
+            } else {
+                if(commentFound.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+}
+
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
         return next();

@@ -5,12 +5,18 @@
     <img src="<%= campground.image %>">
     <p><%= campground.description %> - Created by <%= campground.author.username %></p>
     <% campground.comments.forEach(function(comment) { %>
-        <p>
-            <%= comment.author.username %> - <%= comment.text %>
-        </p>
+        <div>
+          <%= comment.author.username %> - <%= comment.text %>
+            <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+            <form class="form-delete" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                <button>Delete</button>
+            </form>  
+        </div>
+            
+        
     <% }) %>
     <a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+    <form class="form-delete"action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
         <button class="btn btn-danger">Delete</button>
     </form>
     <a href="/campgrounds/<%= campground._id %>/comments/new">Add new comment!</a>
