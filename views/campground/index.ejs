@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+
+<h1>Index Page</h1>
+
+<% campgrounds.forEach(function(campground) { %>
+    <p><%=  campground.name%></p>
+    <img src="<%= campground.image %>">
+    <p><%= campground.description %></p>
+    <a href="/campgrounds/<%= campground._id %>">Show Info</a>
+<% })  %>
+
+<a href="/campgrounds/new">New Camp</a>
+
+<% include ../partials/footer %>
