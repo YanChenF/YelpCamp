@@ -43,11 +43,43 @@ router.get("/:id", function(req, res) {//right now the associated comments only 
         if(err) {
             console.log(err);
         } else {
-            console.log(campFound.author);
             res.render("campground/show", {campground: campFound});
         }
     });
 });
+
+//edit route
+router.get("/:id/edit", function(req, res) {
+    Camp.findById(req.params.id, function(err, campFound) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("campground/edit", {campground: campFound});
+        }
+    });
+});
+
+//update
+router.put("/:id", function(req, res) {
+    Camp.findByIdAndUpdate(req.params.id, req.body.camp, function(err, campUpdated) {
+       if(err) {
+           console.log(err);
+       } else {
+           res.redirect("/campgrounds/" + req.params.id);
+       }
+    });
+});
+
+//delete
+router.delete("/:id", function(req, res) {
+    Camp.findByIdAndRemove(req.params.id, function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect("/campgrounds");
+        }
+    })
+})
 
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {

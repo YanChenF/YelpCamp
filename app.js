@@ -180,6 +180,7 @@ var express = require("express"),
     passportLocalMongoose = require("passport-local-mongoose"),
     Camp = require("./models/campground"),
     Comment = require("./models/comment"),
+    methodOverride = require("method-override"),
     campgroundRoutes = require("./routes/campground"),
     commentRoutes = require("./routes/comment"),
     indexRoutes = require("./routes/index");
@@ -188,6 +189,7 @@ var express = require("express"),
 app.set("view engine", "ejs");
 mongoose.connect("mongodb://localhost:27017/campgrounds_app", { useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 //seedDB();//refresh the db every time the server started.
 app.use(require("express-session")({
     secret: "i dont know",
