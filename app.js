@@ -17,7 +17,9 @@ var express = require("express"),
 //init
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-mongoose.connect("mongodb://localhost:27017/campgrounds_app", { useNewUrlParser: true });
+//mongoose.connect("mongodb://localhost:27017/campgrounds_app", { useNewUrlParser: true });
+mongoose.connect("mongodb://yan:123456aB@ds133632.mlab.com:33632/myfirstdeploy", { useNewUrlParser: true });
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 //seedDB();//refresh the db every time the server started.
