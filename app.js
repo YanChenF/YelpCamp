@@ -12,13 +12,14 @@ var express = require("express"),
     methodOverride = require("method-override"),
     campgroundRoutes = require("./routes/campground"),
     commentRoutes = require("./routes/comment"),
+    url = process.env.DATABASEURL || "mongodb://localhost:27017/campgrounds_app",
     indexRoutes = require("./routes/index");
     
 //init
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+mongoose.connect(url, { useNewUrlParser: true });
 //mongoose.connect("mongodb://localhost:27017/campgrounds_app", { useNewUrlParser: true });
-mongoose.connect("mongodb://yan:123456aB@ds133632.mlab.com:33632/myfirstdeploy", { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
