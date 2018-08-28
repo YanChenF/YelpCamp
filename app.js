@@ -12,6 +12,7 @@ var express = require("express"),
     methodOverride = require("method-override"),
     campgroundRoutes = require("./routes/campground"),
     commentRoutes = require("./routes/comment"),
+    flash = require("connect-flash"),
     url = process.env.DATABASEURL || "mongodb://localhost:27017/campgrounds_app",
     indexRoutes = require("./routes/index");
     
@@ -23,6 +24,7 @@ mongoose.connect(url, { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 //seedDB();//refresh the db every time the server started.
 app.use(require("express-session")({
     secret: "i dont know",
@@ -37,6 +39,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next) {
    res.locals.user = req.user;
+   res.locals.success = req.flash("success");
+   res.locals.error = req.flash("error");
    next();
 });
 
