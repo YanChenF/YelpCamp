@@ -1,0 +1,38 @@
+<div class="container">
+    <form method="post" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=PUT" class="form-horizontal" role="form" id="myForm" onsubmit="return ">
+        <div class="modal fade" id="commentModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+
+                    <div class="btn-info modal-header">
+                        <!--  模态框标题  -->
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!--  关闭按钮  -->
+                        <h4>Edit</h4>
+                        <!--  标题内容  -->
+                    </div>
+
+                    <div class="modal-body">
+                        <!--  模态框内容，我在此处添加一个表单 -->
+                        <form class="form-horizontal" role="form" action="/login" method="post">
+                            <div class="form-group">
+                                <label for="commentText" class="col-sm-2 control-label">Text: </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="comment[text]" value="<%= comment.text %>" id="commentText">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="submit" class="btn btn-info">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
+</div>
